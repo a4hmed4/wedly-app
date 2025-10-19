@@ -36,7 +36,7 @@ def generate_payment_receipt_pdf(payment):
 
     # Footer / notes
     p.setFont("Helvetica-Oblique", 9)
-    p.drawString(40, 40, "Thank you for using WeddingApp.")
+    p.drawString(40, 40, "Thank you for using WedlyApp.")
 
     p.showPage()
     p.save()

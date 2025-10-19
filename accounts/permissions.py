@@ -3,7 +3,7 @@ from rest_framework import permissions
 
 class IsAdmin(permissions.BasePermission):
     def has_permission(self, request, view):
-        return request.user.is_authenticated and request.user.role == 'ADMIN'
+        return bool(request.user and request.user.is_authenticated and getattr(request.user, 'role', None) == 'ADMIN')
 
 
 class IsVenueOwner(permissions.BasePermission):

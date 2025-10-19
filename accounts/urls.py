@@ -8,7 +8,8 @@ from .views import (
     ServiceProviderDashboardView,
     UserDashboardView,
     PasswordResetRequestView,
-    UploadProfileImageView
+    UploadProfileImageView,
+    AdminDashboardView,
 )
 
 urlpatterns = [
@@ -21,6 +22,7 @@ urlpatterns = [
     path('dashboard/owner/', OwnerDashboardView.as_view(), name='owner-dashboard'),
     path('dashboard/service/', ServiceProviderDashboardView.as_view(), name='service-dashboard'),
     path('dashboard/user/', UserDashboardView.as_view(), name='user-dashboard'),
+    path('dashboard/admin/', AdminDashboardView.as_view(), name='admin-dashboard'),
     path('password/reset/', PasswordResetRequestView.as_view(), name='password_reset'),
 
 

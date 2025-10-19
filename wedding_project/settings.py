@@ -67,6 +67,8 @@ INSTALLED_APPS = [
     "dj_rest_auth",
     
     "dj_rest_auth.registration",
+    # cloud integration app
+    "cloud",
 ]
 
 
@@ -78,6 +80,9 @@ REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': (
         'rest_framework.permissions.IsAuthenticatedOrReadOnly',
     ),
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.CursorPagination',
+    'PAGE_SIZE': int(os.getenv('API_PAGE_SIZE', '10')),
+    'DEFAULT_FILTER_BACKENDS': [],
 }
 
 
@@ -177,10 +182,10 @@ EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = os.getenv('EMAIL_HOST', 'smtp.gmail.com')
 EMAIL_PORT = int(os.getenv('EMAIL_PORT', '587'))
 EMAIL_USE_TLS = os.getenv('EMAIL_USE_TLS', 'True').lower() == 'true'
-EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER', 'ahmed244elsayed@gmail.com')
-EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD', 'ouzz kegu jjsc ekcc')
+EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER', 'wedly.app.info@gmail.com')
+EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD', 'knah tomv labt haer')
 DEFAULT_FROM_EMAIL = os.getenv('DEFAULT_FROM_EMAIL', 'wedlyapp <wedly.app.info@gmail.com>')
-FRONTEND_URL = os.getenv('FRONTEND_URL', 'http://localhost:8000/api/accounts') 
+FRONTEND_URL = os.getenv('FRONTEND_URL', 'http://localhost:8080/api/accounts') 
 
 SIMPLE_JWT = {
     'ACCESS_TOKEN_LIFETIME': timedelta(minutes=int(os.getenv('ACCESS_TOKEN_LIFETIME_MINUTES', '30'))),
@@ -192,8 +197,6 @@ SITE_ID = 1
 
 # allauth settings 
 ACCOUNT_EMAIL_VERIFICATION = "mandatory"
-#ACCOUNT_AUTHENTICATION_METHOD = "username_email"
-#ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_LOGIN_METHODS = {"email", "username"}
 ACCOUNT_SIGNUP_FIELDS = ["email*", "username*", "password1*", "password2*"]
 ACCOUNT_UNIQUE_EMAIL = True
@@ -202,3 +205,11 @@ ACCOUNT_UNIQUE_EMAIL = True
 REST_AUTH_REGISTER_SERIALIZERS = {
     'REGISTER_SERIALIZER': 'accounts.serializers.RegisterSerializer',
 }
+
+# =========================
+# Firebase / Firestore
+# =========================
+FIRESTORE_ENABLED = os.getenv('FIRESTORE_ENABLED', 'false').lower() == 'true'
+FIREBASE_PROJECT_ID = os.getenv('FIREBASE_PROJECT_ID', '')
+FIREBASE_CREDENTIALS_JSON = os.getenv('FIREBASE_CREDENTIALS_JSON', '')  # path or JSON string
+FIRESTORE_DEFAULT_ORDER_FIELD = os.getenv('FIRESTORE_DEFAULT_ORDER_FIELD', 'created_at')

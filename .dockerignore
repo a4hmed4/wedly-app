@@ -1,0 +1,72 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Virtual environments
+venv/
+env/
+ENV/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Git
+.git/
+.gitignore
+
+# Django
+*.log
+local_settings.py
+db.sqlite3
+db.sqlite3-journal
+
+# Media files (keep structure but not content)
+media/
+staticfiles/
+
+# Environment files
+.env
+.env.local
+.env.production
+
+# Documentation
+*.md
+docs/
+
+# Testing
+.coverage
+.pytest_cache/
+htmlcov/
+
+# Docker
+Dockerfile*
+docker-compose*.yml
+.dockerignore
+
+# Postman
+postman/

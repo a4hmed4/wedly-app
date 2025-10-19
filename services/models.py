@@ -2,6 +2,7 @@ from django.db import models
 from django.conf import settings
 #from bookings.models import ServiceBooking
 from decimal import Decimal
+from accounts.models import User as AccountsUser
 
 User = settings.AUTH_USER_MODEL
 
@@ -29,6 +30,7 @@ class Service(models.Model):
     name = models.CharField(max_length=200)
     description = models.TextField(blank=True, null=True)
     service_type = models.CharField(max_length=50, choices=SERVICE_TYPE_CHOICES)
+    business_type = models.CharField(max_length=50, choices=AccountsUser.BusinessType.choices, blank=True, null=True)
     price = models.DecimalField(max_digits=10, decimal_places=2)
     duration_hours = models.PositiveIntegerField(default=1)
     max_capacity = models.PositiveIntegerField(default=100)

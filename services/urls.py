@@ -4,7 +4,9 @@ from .views import (
     ServiceViewSet,
     ServicePlanViewSet,
     ServicePaymentMethodViewSet,
-    ExtraServiceViewSet
+    ExtraServiceViewSet,
+    ProviderStorefrontView,
+    StorefrontSchemaView,
 )
 
 router = DefaultRouter()
@@ -16,4 +18,6 @@ router.register('extra_services', ExtraServiceViewSet)
 
 urlpatterns = [
     path('', include(router.urls)),
+    path('storefront/', ProviderStorefrontView.as_view(), name='provider-storefront'),
+    path('storefront/schema/', StorefrontSchemaView.as_view(), name='storefront-schema'),
 ]

@@ -125,7 +125,7 @@ class RegisterSerializer(serializers.ModelSerializer):
             f"Please cofirm that you created account as a {user.Role}, \n\n"
             f"Please verify your email to activate your account:\n"
             f"{verify_link}\n\n"
-            f"Thank you for joining Wedly app 💍"
+            f"Thank you for joining WedlyApp 💍"
         )
 
         send_mail(
@@ -157,8 +157,8 @@ class UserSerializer(serializers.ModelSerializer):
             }
         elif obj.role == User.Role.SERVICE:
             return {
-                "total_services": obj.services.count(),
-                "total_bookings": Booking.objects.filter(service__provider=obj).count(),
+                "total_services": getattr(obj, 'provided_services').count(),
+                "total_bookings": Booking.objects.filter(service_bookings__service__provider=obj).distinct().count(),
             }
         elif obj.role == User.Role.USER:
             return {"total_bookings": obj.bookings.count()}
@@ -167,16 +167,17 @@ class UserSerializer(serializers.ModelSerializer):
     def get_venues(self, obj):
         if obj.role == User.Role.OWNER:
             return [
-                {"id": v.id, "name": v.name, "address": v.address, "capacity": v.capacity, "price": v.price_per_day}
+                {"id": v.id, "name": v.name, "address": v.address, "capacity": v.capacity}
                 for v in obj.venues.all()
             ]
         return []
 
     def get_services(self, obj):
         if obj.role == User.Role.SERVICE:
+            # use provided_services from Service.provider related_name
             return [
                 {"id": s.id, "name": s.name, "category": s.get_service_type_display(), "price": s.price}
-                for s in obj.services.all()
+                for s in getattr(obj, 'provided_services').all()
             ]
         return []
 
@@ -208,8 +209,8 @@ class UserDashboardSerializer(serializers.ModelSerializer):
             }
         elif obj.role == User.Role.SERVICE:
             return {
-                "total_services": obj.services.count(),
-                "total_bookings": Booking.objects.filter(service__provider=obj).count(),
+                "total_services": getattr(obj, 'provided_services').count(),
+                "total_bookings": Booking.objects.filter(service_bookings__service__provider=obj).distinct().count(),
             }
         elif obj.role == User.Role.USER:
             return {"total_bookings": obj.bookings.count()}
@@ -237,7 +238,7 @@ class PasswordResetRequestSerializer(serializers.Serializer):
             reset_link = (
                 f"{settings.FRONTEND_URL}/reset-password-confirm/{uid}/{token}/"
             )
-            subject = "Reset your WeddingApp password"
+            subject = "Reset your WedlyApp password"
             message = f"Hi {user.username},\n\nClick the link to reset your password:\n{reset_link}\n\nIf you didn't request this, ignore."
             send_mail(
                 subject,

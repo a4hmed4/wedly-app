@@ -122,7 +122,7 @@ class ServiceProviderDashboardView(APIView):
         if user.role != User.Role.SERVICE:
             return Response({'error': 'Access denied. Not a service provider.'}, status=status.HTTP_403_FORBIDDEN)
 
-        services = ExtraService.objects.filter(provider=user)
+        services = ExtraService.objects.filter(service__provider=user)
         services_data = ExtraServiceSerializer(services, many=True).data
         user_data = UserSerializer(user).data
         user_data["provided_services"] = services_data
@@ -156,3 +156,41 @@ class PasswordResetRequestView(generics.GenericAPIView):
         ser.is_valid(raise_exception=True)
         ser.save()
         return Response({'detail': 'If the email exists, a reset link has been sent.'}, status=status.HTTP_200_OK)
+
+
+# ============================================================
+#  ADMIN DASHBOARD VIEW (paginated overview)
+# ============================================================
+from accounts.permissions import IsAdmin
+from rest_framework.pagination import CursorPagination
+from django.utils.module_loading import import_string
+
+
+class AdminCursorPagination(CursorPagination):
+    page_size = 10
+    ordering = '-id'
+
+
+class AdminDashboardView(APIView):
+    permission_classes = [permissions.IsAuthenticated, IsAdmin]
+
+    def get(self, request):
+        paginator = AdminCursorPagination()
+
+        # Summaries for 4 roles
+        from .models import User
+        counts = {
+            'admins': User.objects.filter(role=User.Role.ADMIN).count(),
+            'owners': User.objects.filter(role=User.Role.OWNER).count(),
+            'services': User.objects.filter(role=User.Role.SERVICE).count(),
+            'users': User.objects.filter(role=User.Role.USER).count(),
+        }
+
+        # Paginate users list
+        queryset = User.objects.all().order_by('-id')
+        page = paginator.paginate_queryset(queryset, request, view=self)
+        data = UserSerializer(page, many=True).data
+        return paginator.get_paginated_response({
+            'counts': counts,
+            'users': data,
+        })

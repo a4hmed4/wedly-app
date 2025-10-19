@@ -22,6 +22,18 @@ class ServiceSerializer(serializers.ModelSerializer):
         model = Service
         fields = '__all__'
 
+    def create(self, validated_data):
+        # default business_type from provider if not set
+        if not validated_data.get('business_type') and self.context.get('request') and getattr(self.context['request'].user, 'business_type', None):
+            validated_data['business_type'] = self.context['request'].user.business_type
+        return super().create(validated_data)
+
+    def update(self, instance, validated_data):
+        # prevent clearing to None: keep existing if not provided
+        if 'business_type' not in validated_data and instance.business_type:
+            validated_data['business_type'] = instance.business_type
+        return super().update(instance, validated_data)
+
 
 """ class ServiceBookingSerializer(serializers.ModelSerializer):
     service = ServiceSerializer(read_only=True)

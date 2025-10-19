@@ -28,6 +28,7 @@ urlpatterns = [
     path('api/bookings/', include('bookings.urls')),
     path('api/payments/', include('payments.urls')),
     path('api/reviews/', include('reviews.urls')),
+    path('api/cloud/', include('cloud.urls')),
     path('api/notifications/', include('notifications.urls')),
     path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),

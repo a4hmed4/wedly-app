@@ -1,0 +1,2 @@
+default_app_config = 'cloud.apps.CloudConfig'
+

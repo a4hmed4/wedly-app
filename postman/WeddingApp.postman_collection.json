@@ -1,0 +1,147 @@
+{
+  "info": {
+    "name": "WedlyApp API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_postman_id": "b1e9f3c2-7a6e-4c8f-9e21-0000weddingapp"
+  },
+  "item": [
+    {
+      "name": "Auth & Accounts",
+      "item": [
+        {
+          "name": "Register",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "url": { "raw": "{{baseUrl}}/api/accounts/register/", "host": ["{{baseUrl}}"], "path": ["api", "accounts", "register", ""] },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"username\": \"user1\",\n  \"email\": \"user1@example.com\",\n  \"password\": \"Passw0rd!\",\n  \"confirm_password\": \"Passw0rd!\",\n  \"phone\": \"0100000000\",\n  \"gender\": \"MALE\",\n  \"role\": \"USER\",\n  \"business_type\": \"NONE\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Token (SimpleJWT)",
+          "request": {
+            "method": "POST",
+            "header": [ { "key": "Content-Type", "value": "application/json" } ],
+            "url": { "raw": "{{baseUrl}}/api/token/", "host": ["{{baseUrl}}"], "path": ["api", "token", ""] },
+            "body": { "mode": "raw", "raw": "{\n  \"username\": \"user1\",\n  \"password\": \"Passw0rd!\"\n}" }
+          }
+        },
+        {
+          "name": "Token Refresh",
+          "request": {
+            "method": "POST",
+            "header": [ { "key": "Content-Type", "value": "application/json" } ],
+            "url": { "raw": "{{baseUrl}}/api/token/refresh/", "host": ["{{baseUrl}}"], "path": ["api", "token", "refresh", ""] },
+            "body": { "mode": "raw", "raw": "{\n  \"refresh\": \"{{refreshToken}}\"\n}" }
+          }
+        },
+        {
+          "name": "Profile (me)",
+          "request": {
+            "method": "GET",
+            "header": [ { "key": "Authorization", "value": "Bearer {{accessToken}}" } ],
+            "url": { "raw": "{{baseUrl}}/api/accounts/profile/", "host": ["{{baseUrl}}"], "path": ["api", "accounts", "profile", ""] }
+          }
+        },
+        {
+          "name": "Dashboard - User",
+          "request": {
+            "method": "GET",
+            "header": [ { "key": "Authorization", "value": "Bearer {{accessToken}}" } ],
+            "url": { "raw": "{{baseUrl}}/api/accounts/dashboard/user/", "host": ["{{baseUrl}}"], "path": ["api", "accounts", "dashboard", "user", ""] }
+          }
+        },
+        {
+          "name": "Dashboard - Owner",
+          "request": {
+            "method": "GET",
+            "header": [ { "key": "Authorization", "value": "Bearer {{accessToken}}" } ],
+            "url": { "raw": "{{baseUrl}}/api/accounts/dashboard/owner/", "host": ["{{baseUrl}}"], "path": ["api", "accounts", "dashboard", "owner", ""] }
+          }
+        },
+        {
+          "name": "Dashboard - Service",
+          "request": {
+            "method": "GET",
+            "header": [ { "key": "Authorization", "value": "Bearer {{accessToken}}" } ],
+            "url": { "raw": "{{baseUrl}}/api/accounts/dashboard/service/", "host": ["{{baseUrl}}"], "path": ["api", "accounts", "dashboard", "service", ""] }
+          }
+        },
+        {
+          "name": "Dashboard - Admin (paginated)",
+          "request": {
+            "method": "GET",
+            "header": [ { "key": "Authorization", "value": "Bearer {{adminAccessToken}}" } ],
+            "url": { "raw": "{{baseUrl}}/api/accounts/dashboard/admin/", "host": ["{{baseUrl}}"], "path": ["api", "accounts", "dashboard", "admin", ""] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Halls (Venues & Halls)",
+      "item": [
+        { "name": "List Venues", "request": { "method": "GET", "url": { "raw": "{{baseUrl}}/api/halls/venues/", "host": ["{{baseUrl}}"], "path": ["api","halls","venues",""] } } },
+        { "name": "Create Venue (owner)", "request": { "method": "POST", "header": [ {"key": "Authorization", "value": "Bearer {{ownerAccessToken}}" }, {"key":"Content-Type","value":"application/json"} ], "url": { "raw": "{{baseUrl}}/api/halls/create/", "host":["{{baseUrl}}"], "path":["api","halls","create",""] }, "body": {"mode":"raw","raw":"{\n  \"name\": \"Venue A\",\n  \"address\": \"Address\",\n  \"capacity\": 200,\n  \"price_per_day\": 1000\n}"} } },
+        { "name": "Update Venue (owner)", "request": { "method": "PATCH", "header": [ {"key": "Authorization", "value": "Bearer {{ownerAccessToken}}" }, {"key":"Content-Type","value":"application/json"} ], "url": { "raw": "{{baseUrl}}/api/halls/venues/{{venueId}}/update/", "host":["{{baseUrl}}"], "path":["api","halls","venues","{{venueId}}","update",""] }, "body": {"mode":"raw","raw":"{\n  \"name\": \"Venue A Updated\"\n}"} } },
+        { "name": "Delete Venue (owner)", "request": { "method": "DELETE", "header": [ {"key": "Authorization", "value": "Bearer {{ownerAccessToken}}" } ], "url": { "raw": "{{baseUrl}}/api/halls/venues/{{venueId}}/delete/", "host":["{{baseUrl}}"], "path":["api","halls","venues","{{venueId}}","delete",""] } } },
+        { "name": "List Halls", "request": { "method": "GET", "url": { "raw": "{{baseUrl}}/api/halls/halls/", "host": ["{{baseUrl}}"], "path": ["api","halls","halls",""] } } },
+        { "name": "Create Hall (owner)", "request": { "method": "POST", "header": [ {"key": "Authorization", "value": "Bearer {{ownerAccessToken}}" }, {"key":"Content-Type","value":"application/json"} ], "url": { "raw": "{{baseUrl}}/api/halls/halls/", "host":["{{baseUrl}}"], "path":["api","halls","halls",""] }, "body": {"mode":"raw","raw":"{\n  \"venue\": {{venueId}},\n  \"name\": \"Main Hall\",\n  \"capacity\": 150,\n  \"price_per_day\": 700\n}"} } },
+        { "name": "Update Hall (owner)", "request": { "method": "PATCH", "header": [ {"key": "Authorization", "value": "Bearer {{ownerAccessToken}}" }, {"key":"Content-Type","value":"application/json"} ], "url": { "raw": "{{baseUrl}}/api/halls/halls/{{hallId}}/", "host":["{{baseUrl}}"], "path":["api","halls","halls","{{hallId}}",""] }, "body": {"mode":"raw","raw":"{\n  \"capacity\": 180\n}"} } },
+        { "name": "Delete Hall (owner)", "request": { "method": "DELETE", "header": [ {"key": "Authorization", "value": "Bearer {{ownerAccessToken}}" } ], "url": { "raw": "{{baseUrl}}/api/halls/halls/{{hallId}}/", "host":["{{baseUrl}}"], "path":["api","halls","halls","{{hallId}}",""] } } }
+      ]
+    },
+    {
+      "name": "Services",
+      "item": [
+        { "name": "List Services", "request": { "method": "GET", "url": { "raw": "{{baseUrl}}/api/services/services/", "host": ["{{baseUrl}}"], "path": ["api","services","services",""] } } },
+        { "name": "Create Service (provider)", "request": { "method": "POST", "header": [ {"key":"Authorization","value":"Bearer {{serviceAccessToken}}"}, {"key":"Content-Type","value":"application/json"} ], "url": { "raw": "{{baseUrl}}/api/services/services/", "host":["{{baseUrl}}"], "path":["api","services","services",""] }, "body": {"mode":"raw","raw":"{\n  \"name\": \"Photography\",\n  \"price\": 500\n}"} } },
+        { "name": "Update Service (provider)", "request": { "method": "PATCH", "header": [ {"key":"Authorization","value":"Bearer {{serviceAccessToken}}"}, {"key":"Content-Type","value":"application/json"} ], "url": { "raw": "{{baseUrl}}/api/services/services/{{serviceId}}/", "host":["{{baseUrl}}"], "path":["api","services","services","{{serviceId}}",""] }, "body": {"mode":"raw","raw":"{\n  \"price\": 550\n}"} } },
+        { "name": "Delete Service (provider)", "request": { "method": "DELETE", "header": [ {"key":"Authorization","value":"Bearer {{serviceAccessToken}}"} ], "url": { "raw": "{{baseUrl}}/api/services/services/{{serviceId}}/", "host":["{{baseUrl}}"], "path":["api","services","services","{{serviceId}}",""] } } },
+        { "name": "My Services (provider)", "request": { "method": "GET", "header": [ {"key":"Authorization","value":"Bearer {{serviceAccessToken}}"} ], "url": { "raw": "{{baseUrl}}/api/services/services/mine/", "host":["{{baseUrl}}"], "path":["api","services","services","mine",""] } } }
+      ]
+    },
+    {
+      "name": "Bookings",
+      "item": [
+        { "name": "List My Bookings", "request": { "method": "GET", "header": [ {"key":"Authorization","value":"Bearer {{accessToken}}"} ], "url": { "raw": "{{baseUrl}}/api/bookings/book/", "host": ["{{baseUrl}}"], "path": ["api","bookings","book",""] } } },
+        { "name": "Create Booking", "request": { "method": "POST", "header": [ {"key":"Authorization","value":"Bearer {{accessToken}}"}, {"key":"Content-Type","value":"application/json"} ], "url": { "raw": "{{baseUrl}}/api/bookings/book/", "host":["{{baseUrl}}"], "path":["api","bookings","book",""] }, "body": {"mode":"raw","raw":"{\n  \"venue\": {{venueId}}\n}"} } },
+        { "name": "Update Booking", "request": { "method": "PATCH", "header": [ {"key":"Authorization","value":"Bearer {{accessToken}}"}, {"key":"Content-Type","value":"application/json"} ], "url": { "raw": "{{baseUrl}}/api/bookings/book/{{bookingId}}/", "host":["{{baseUrl}}"], "path":["api","bookings","book","{{bookingId}}",""] }, "body": {"mode":"raw","raw":"{\n  \"status\": \"CONFIRMED\"\n}"} } },
+        { "name": "Delete Booking", "request": { "method": "DELETE", "header": [ {"key":"Authorization","value":"Bearer {{accessToken}}"} ], "url": { "raw": "{{baseUrl}}/api/bookings/book/{{bookingId}}/", "host":["{{baseUrl}}"], "path":["api","bookings","book","{{bookingId}}",""] } } }
+      ]
+    },
+    {
+      "name": "Reviews",
+      "item": [
+        { "name": "List Reviews", "request": { "method": "GET", "url": { "raw": "{{baseUrl}}/api/reviews/reviews/", "host": ["{{baseUrl}}"], "path": ["api","reviews","reviews",""] } } },
+        { "name": "Create Review", "request": { "method": "POST", "header": [ {"key":"Authorization","value":"Bearer {{accessToken}}"}, {"key":"Content-Type","value":"application/json"} ], "url": { "raw": "{{baseUrl}}/api/reviews/reviews/", "host":["{{baseUrl}}"], "path":["api","reviews","reviews",""] }, "body": {"mode":"raw","raw":"{\n  \"rating\": 5,\n  \"comment\": \"Great!\"\n}"} } },
+        { "name": "Update Review", "request": { "method": "PATCH", "header": [ {"key":"Authorization","value":"Bearer {{accessToken}}"}, {"key":"Content-Type","value":"application/json"} ], "url": { "raw": "{{baseUrl}}/api/reviews/reviews/{{reviewId}}/", "host":["{{baseUrl}}"], "path":["api","reviews","reviews","{{reviewId}}",""] }, "body": {"mode":"raw","raw":"{\n  \"comment\": \"Updated\"\n}"} } },
+        { "name": "Delete Review", "request": { "method": "DELETE", "header": [ {"key":"Authorization","value":"Bearer {{accessToken}}"} ], "url": { "raw": "{{baseUrl}}/api/reviews/reviews/{{reviewId}}/", "host":["{{baseUrl}}"], "path":["api","reviews","reviews","{{reviewId}}",""] } } }
+      ]
+    },
+    {
+      "name": "Payments",
+      "item": [
+        { "name": "List Payments", "request": { "method": "GET", "header": [ {"key":"Authorization","value":"Bearer {{accessToken}}"} ], "url": { "raw": "{{baseUrl}}/api/payments/payments/", "host": ["{{baseUrl}}"], "path": ["api","payments","payments",""] } } }
+      ]
+    },
+    {
+      "name": "Notifications",
+      "item": [
+        { "name": "List Notifications", "request": { "method": "GET", "header": [ {"key":"Authorization","value":"Bearer {{accessToken}}"} ], "url": { "raw": "{{baseUrl}}/api/notifications/", "host": ["{{baseUrl}}"], "path": ["api","notifications",""] } } }
+      ]
+    },
+    {
+      "name": "Cloud (Firestore)",
+      "item": [
+        { "name": "List Collection (paginated)", "request": { "method": "GET", "header": [ {"key":"Authorization","value":"Bearer {{adminAccessToken}}"} ], "url": { "raw": "{{baseUrl}}/api/cloud/fs/{{collection}}/?page_size=10", "host": ["{{baseUrl}}"], "path": ["api","cloud","fs","{{collection}}",""] } } }
+      ]
+    }
+  ],
+  "variable": []
+}
+
