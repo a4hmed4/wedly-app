@@ -34,7 +34,13 @@ DEBUG = os.getenv('DEBUG', 'True').lower() == 'true'
 # Allow all hosts for Cloud Run
 #ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', '*').split(',')
 
-ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS", "wedly-app-258355634687.me-central1.run.app,localhost,127.0.0.1").split(",")
+#ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS", "wedly-app-258355634687.me-central1.run.app,localhost,127.0.0.1").split(",")
+
+
+ALLOWED_HOSTS = [
+    "wedly-app-258355634687.me-central1.run.app",
+    os.getenv("ALLOWED_HOST", "localhost","127.0.0.1"),
+]
 
 
 # Application definition

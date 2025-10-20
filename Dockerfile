@@ -30,6 +30,7 @@ COPY . .
 # Create directories
 RUN mkdir -p /app/media /app/static
 
+
 # Collect static files only (no database connection needed)
 RUN python manage.py collectstatic --noinput --clear
 
@@ -42,4 +43,6 @@ HEALTHCHECK --interval=30s --timeout=30s --start-period=10s --retries=3 \
     CMD curl -f http://localhost:$PORT/api/accounts/profile/ || exit 1
 
 # Start the application
-CMD exec gunicorn wedding_project.wsgi:application --bind 0.0.0.0:$PORT
+#CMD exec gunicorn wedding_project.wsgi:application --bind 0.0.0.0:$PORT
+CMD [ "bash", "-c", "python manage.py migrate && gunicorn wedding_project.wsgi:application --bind 0.0.0.0:$PORT" ]
+
