@@ -35,7 +35,7 @@ steps:
   - '--concurrency'
   - '80'
   - '--set-env-vars'
-  - 'DEBUG=False,SECRET_KEY=your-secret-key-here,ALLOWED_HOSTS=wedly-app-258355634687.me-central1.run.app,PORT=8080'
+  - 'DEBUG=False,SECRET_KEY=your-secret-key-here,ALLOWED_HOSTS=wedly-app-258355634687.me-central1.run.app,PORT=8080,DJANGO_SETTINGS_MODULE=wedding_project.settings'
 
 images:
 - 'gcr.io/$PROJECT_ID/wedlyapp'

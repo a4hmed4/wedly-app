@@ -37,10 +37,8 @@ RUN python -m compileall . && \
 # Collect static files (optimized)
 RUN python manage.py collectstatic --noinput --clear
 
+# Run migrations
 RUN python manage.py migrate --noinput
-
-# Make startup script executable
-RUN chmod +x start.sh
 
 # Create non-root user
 RUN adduser --disabled-password --gecos '' appuser && \
@@ -54,5 +52,5 @@ EXPOSE 8080
 HEALTHCHECK --interval=30s --timeout=30s --start-period=5s --retries=3 \
     CMD python -c "import os, requests; port=os.environ.get('PORT', '8080'); requests.get(f'http://localhost:{port}/api/accounts/profile/', timeout=10)" || exit 1
 
-# Run the application
-CMD ["./start.sh"]
+# Run the application directly with Gunicorn
+CMD ["gunicorn", "wedding_project.wsgi:application", "-c", "gunicorn.conf.py"]

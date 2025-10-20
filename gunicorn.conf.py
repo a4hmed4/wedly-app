@@ -51,3 +51,21 @@ graceful_timeout = 30
 limit_request_line = 4094
 limit_request_fields = 100
 limit_request_field_size = 8190
+
+# Django startup commands
+def on_starting(server):
+    """Run Django commands on startup"""
+    import subprocess
+    import sys
+    
+    print("🚀 Starting WedlyApp...")
+    
+    # Run migrations
+    print("📊 Running database migrations...")
+    subprocess.run([sys.executable, "manage.py", "migrate", "--noinput"], check=True)
+    
+    # Collect static files
+    print("📁 Collecting static files...")
+    subprocess.run([sys.executable, "manage.py", "collectstatic", "--noinput", "--clear"], check=True)
+    
+    print("✅ Django setup complete!")
