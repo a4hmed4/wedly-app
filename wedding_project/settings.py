@@ -33,10 +33,11 @@ DEBUG = os.getenv('DEBUG', 'True').lower() == 'true'
 
 import os
 
-ALLOWED_HOSTS = os.getenv(
+""" ALLOWED_HOSTS = os.getenv(
     'ALLOWED_HOSTS',
     'wedly-app-258355634687.me-central1.run.app,localhost,127.0.0.1'
-).split(',')
+).split(',') """
+ALLOWED_HOSTS = ["*"]
 
 
 # Application definition
