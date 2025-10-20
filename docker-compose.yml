@@ -10,11 +10,11 @@ services:
       - ./static:/app/static
     environment:
       - DEBUG=False
-      - SECRET_KEY=your-secret-key-here
-      - DATABASE_URL=sqlite:///db.sqlite3
-      - ALLOWED_HOSTS=localhost,127.0.0.1,0.0.0.0
+      - SECRET_KEY=django-insecure-=om$f*08=)8i=gmqzud!ql@k=)bsknx-bct32^v^(=qn0vad@l
+      - DATABASE_URL=postgresql://postgres.kbdloigsvdrxqngrflvb:Wedly%40%402025@aws-1-us-east-2.pooler.supabase.com:5432/postgres
+      - ALLOWED_HOSTS=wedly-app-258355634687.me-central1.run.app,localhost,127.0.0.1,0.0.0.0
     depends_on:
-      - db
+      #- db
     restart: unless-stopped
 
   db:

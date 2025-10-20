@@ -34,7 +34,7 @@ DEBUG = os.getenv('DEBUG', 'True').lower() == 'true'
 # Allow all hosts for Cloud Run
 #ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', '*').split(',')
 
-ALLOWED_HOSTS = ["wedly-app-258355634687.me-central1.run.app","localhost","127.0.0.1", "0.0.0.0"]
+ALLOWED_HOSTS = ['ALLOWED_HOSTS','wedly-app-258355634687.me-central1.run.app','localhost','127.0.0.1', '0.0.0.0']
 
 
 """ ALLOWED_HOSTS = [
@@ -196,7 +196,7 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.2/howto/static-files/
 
-STATIC_URL = "static/"
+STATIC_URL = '/static/'
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
@@ -217,7 +217,7 @@ EMAIL_HOST = os.getenv('EMAIL_HOST', 'smtp.gmail.com')
 EMAIL_PORT = int(os.getenv('EMAIL_PORT', '587'))
 EMAIL_USE_TLS = os.getenv('EMAIL_USE_TLS', 'True').lower() == 'true'
 EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER', 'wedly.app.info@gmail.com')
-EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD', 'knah tomv labt haer')
+EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD', '')
 DEFAULT_FROM_EMAIL = os.getenv('DEFAULT_FROM_EMAIL', 'wedlyapp <wedly.app.info@gmail.com>')
 FRONTEND_URL = os.getenv('FRONTEND_URL', 'http://localhost:8080/api/accounts') 
 

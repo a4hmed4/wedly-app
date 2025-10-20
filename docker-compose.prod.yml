@@ -10,14 +10,14 @@ services:
       - ./static:/app/static
     environment:
       - DEBUG=False
-      - SECRET_KEY=${SECRET_KEY}
-      - DATABASE_URL=postgresql://wedlyapp:wedlyapp123@db:5432/wedlyapp
-      - ALLOWED_HOSTS=${ALLOWED_HOSTS}
+      - SECRET_KEY=django-insecure-=om$f*08=)8i=gmqzud!ql@k=)bsknx-bct32^v^(=qn0vad@l
+      - DATABASE_URL=postgresql://postgres.kbdloigsvdrxqngrflvb:Wedly%40%402025@aws-1-us-east-2.pooler.supabase.com:5432/postgres
+      - ALLOWED_HOSTS=wedly-app-258355634687.me-central1.run.app,localhost,127.0.0.1,0.0.0.0
       - FIRESTORE_ENABLED=${FIRESTORE_ENABLED:-false}
       - FIREBASE_PROJECT_ID=${FIREBASE_PROJECT_ID}
       - FIREBASE_CREDENTIALS_JSON=${FIREBASE_CREDENTIALS_JSON}
     depends_on:
-      - db
+      #- db
       - redis
     restart: unless-stopped
     command: >
