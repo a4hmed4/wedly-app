@@ -1,89 +1,145 @@
-# WedlyApp Docker Setup
+# WedlyApp - Docker Deployment Guide
 
-## Quick Start
+## 🐳 **Docker Deployment (بدون Cloud Build)**
 
-### Development
+### **الملفات المطلوبة:**
+- ✅ `Dockerfile` - إعدادات Docker محسّنة
+- ✅ `docker-deploy.sh` - سكريبت الرفع التلقائي
+- ❌ `cloudbuild.yaml` - تم حذفه
+
+## 🚀 **طريقة الرفع:**
+
+### **1. الرفع التلقائي (مُوصى به):**
 ```bash
-# Build and run with SQLite
-docker build -t wedlyapp .
-docker run -p 8000:8000 wedlyapp
-
-# Or use docker-compose
-docker-compose up --build
+# تشغيل السكريبت
+./docker-deploy.sh
 ```
 
-### Production
+### **2. الرفع اليدوي:**
 ```bash
-# Copy and edit environment file
-cp env.docker .env
+# 1. بناء الصورة
+docker build -t gcr.io/wedly-app-475621/wedlyapp .
 
-# Run production setup
-docker-compose -f docker-compose.prod.yml up --build -d
+# 2. رفع الصورة
+docker push gcr.io/wedly-app-475621/wedlyapp
 
-# Run migrations
-docker-compose -f docker-compose.prod.yml exec web python manage.py migrate
-
-# Create superuser
-docker-compose -f docker-compose.prod.yml exec web python manage.py createsuperuser
+# 3. نشر على Cloud Run
+gcloud run deploy wedlyapp \
+    --image gcr.io/wedly-app-475621/wedlyapp \
+    --platform managed \
+    --region me-central1 \
+    --allow-unauthenticated \
+    --port 8080 \
+    --memory 1Gi \
+    --cpu 1 \
+    --max-instances 10 \
+    --timeout 300 \
+    --concurrency 100 \
+    --set-env-vars "DEBUG=False,SECRET_KEY=your-secret-key-here,ALLOWED_HOSTS=wedly-app-258355634687.me-central1.run.app,PORT=8080,DJANGO_SETTINGS_MODULE=wedding_project.settings,DATABASE_URL=postgresql://postgres:[YOUR_PASSWORD]@db.kbdloigsvdrxqngrflvb.supabase.co:5432/postgres"
 ```
 
-## Environment Variables
+## 🔧 **إعدادات Dockerfile:**
 
-Edit `.env` file with your settings:
+### **المميزات:**
+- ✅ **Dynamic Port**: يستخدم متغير البيئة `PORT`
+- ✅ **Health Check**: فحص صحة التطبيق
+- ✅ **Startup Script**: إعداد Django تلقائي
+- ✅ **Database Support**: دعم SQLite و PostgreSQL
+- ✅ **Static Files**: جمع الملفات الثابتة
+- ✅ **Migrations**: تشغيل migrations تلقائياً
 
+### **Environment Variables:**
 ```bash
 # Required
-SECRET_KEY=your-super-secret-key
-ALLOWED_HOSTS=your-domain.com,localhost
+PORT=8080
+DJANGO_SETTINGS_MODULE=wedding_project.settings
 
-# Database (for production)
-DATABASE_URL=postgresql://user:pass@db:5432/wedlyapp
+# Optional (for Supabase)
+DATABASE_URL=postgresql://postgres:[PASSWORD]@db.kbdloigsvdrxqngrflvb.supabase.co:5432/postgres
 
-# Email
-EMAIL_HOST_USER=your-email@gmail.com
-EMAIL_HOST_PASSWORD=your-app-password
-
-# Firebase (optional)
-FIRESTORE_ENABLED=true
-FIREBASE_PROJECT_ID=your-project-id
-FIREBASE_CREDENTIALS_JSON=path/to/service-account.json
+# Optional (for production)
+DEBUG=False
+SECRET_KEY=your-secret-key-here
+ALLOWED_HOSTS=wedly-app-258355634687.me-central1.run.app
 ```
 
-## Services
+## 📋 **خطوات الرفع:**
 
-- **web**: Django application (port 8000)
-- **db**: PostgreSQL database (port 5432)
-- **redis**: Redis cache (port 6379)
-- **nginx**: Reverse proxy (port 80/443)
-
-## Commands
-
+### **1. إعداد Google Cloud:**
 ```bash
-# View logs
-docker-compose logs -f web
+# تسجيل الدخول
+gcloud auth login
 
-# Run Django commands
-docker-compose exec web python manage.py migrate
-docker-compose exec web python manage.py createsuperuser
-docker-compose exec web python manage.py collectstatic
+# تعيين المشروع
+gcloud config set project wedly-app-475621
 
-# Access database
-docker-compose exec db psql -U wedlyapp -d wedlyapp
-
-# Restart services
-docker-compose restart web
+# تفعيل APIs
+gcloud services enable run.googleapis.com
+gcloud services enable containerregistry.googleapis.com
 ```
 
-## Production Deployment
+### **2. إعداد Docker:**
+```bash
+# تكوين Docker للـ GCR
+gcloud auth configure-docker
 
-1. Set up environment variables
-2. Configure domain in `ALLOWED_HOSTS`
-3. Set up SSL certificates
-4. Use `docker-compose.prod.yml`
-5. Configure nginx for your domain
+# أو استخدام Docker Desktop مع Google Cloud
+```
 
-## Troubleshooting
+### **3. تحديث كلمة المرور:**
+```bash
+# في docker-deploy.sh أو الأمر اليدوي
+# استبدل [YOUR_PASSWORD] بكلمة المرور الفعلية من Supabase
+DATABASE_URL=postgresql://postgres:your-actual-password@db.kbdloigsvdrxqngrflvb.supabase.co:5432/postgres
+```
 
-- Check logs: `docker-compose logs web`
-- Rebuild: `docker-compose up --build --force-recreate`
-- Reset database: `docker-compose down -v && docker-compose up`
+### **4. الرفع:**
+```bash
+# تشغيل السكريبت
+./docker-deploy.sh
+```
+
+## 🔍 **استكشاف الأخطاء:**
+
+### **مشاكل شائعة:**
+1. **Docker Build Failed**: تحقق من `requirements.txt`
+2. **Push Failed**: تحقق من `gcloud auth configure-docker`
+3. **Deploy Failed**: تحقق من `DATABASE_URL` و `SECRET_KEY`
+
+### **أوامر مفيدة:**
+```bash
+# فحص الصورة
+docker images | grep wedlyapp
+
+# تشغيل محلي
+docker run -p 8080:8080 gcr.io/wedly-app-475621/wedlyapp
+
+# فحص logs
+gcloud run services logs wedlyapp --region me-central1
+```
+
+## 📊 **المراقبة:**
+
+### **Cloud Run Console:**
+- **URL**: `https://wedly-app-258355634687.me-central1.run.app`
+- **Logs**: Cloud Run → wedlyapp → Logs
+- **Metrics**: Cloud Run → wedlyapp → Metrics
+
+### **Supabase Dashboard:**
+- **Database**: مراقبة قاعدة البيانات
+- **Logs**: سجلات الاتصال
+- **Performance**: إحصائيات الأداء
+
+## 🎯 **المميزات:**
+
+- ✅ **Simplified**: Docker فقط بدون Cloud Build
+- ✅ **Flexible**: دعم SQLite و PostgreSQL
+- ✅ **Automated**: سكريبت رفع تلقائي
+- ✅ **Production Ready**: جاهز للإنتاج
+- ✅ **Monitoring**: مراقبة شاملة
+
+## 📞 **الدعم:**
+
+- **Docker Docs**: [docs.docker.com](https://docs.docker.com)
+- **Cloud Run Docs**: [cloud.google.com/run](https://cloud.google.com/run)
+- **Supabase Docs**: [docs.supabase.com](https://docs.supabase.com)
