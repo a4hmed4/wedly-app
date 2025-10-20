@@ -34,11 +34,9 @@ RUN mkdir -p /app/media /app/static
 RUN python -m compileall . && \
     find . -name "*.py" -exec python -m py_compile {} \;
 
-# Collect static files (optimized)
-RUN python manage.py collectstatic --noinput --clear
-
-# Run migrations
-RUN python manage.py migrate --noinput
+# Set environment variables for Django
+ENV DJANGO_SETTINGS_MODULE=wedding_project.settings
+ENV PYTHONPATH=/app
 
 # Create non-root user
 RUN adduser --disabled-password --gecos '' appuser && \
@@ -49,7 +47,7 @@ USER appuser
 EXPOSE 8080
 
 # Health check - use PORT environment variable
-HEALTHCHECK --interval=30s --timeout=30s --start-period=5s --retries=3 \
+HEALTHCHECK --interval=30s --timeout=30s --start-period=10s --retries=3 \
     CMD python -c "import os, requests; port=os.environ.get('PORT', '8080'); requests.get(f'http://localhost:{port}/api/accounts/profile/', timeout=10)" || exit 1
 
 # Run the application directly with Gunicorn

@@ -53,19 +53,27 @@ limit_request_fields = 100
 limit_request_field_size = 8190
 
 # Django startup commands
-def on_starting(server):
-    """Run Django commands on startup"""
+def when_ready(server):
+    """Run Django commands when server is ready"""
     import subprocess
     import sys
+    import os
     
     print("🚀 Starting WedlyApp...")
     
-    # Run migrations
-    print("📊 Running database migrations...")
-    subprocess.run([sys.executable, "manage.py", "migrate", "--noinput"], check=True)
+    # Set Django settings
+    os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'wedding_project.settings')
     
-    # Collect static files
-    print("📁 Collecting static files...")
-    subprocess.run([sys.executable, "manage.py", "collectstatic", "--noinput", "--clear"], check=True)
-    
-    print("✅ Django setup complete!")
+    try:
+        # Run migrations
+        print("📊 Running database migrations...")
+        subprocess.run([sys.executable, "manage.py", "migrate", "--noinput"], check=True)
+        
+        # Collect static files
+        print("📁 Collecting static files...")
+        subprocess.run([sys.executable, "manage.py", "collectstatic", "--noinput", "--clear"], check=True)
+        
+        print("✅ Django setup complete!")
+    except Exception as e:
+        print(f"❌ Error during Django setup: {e}")
+        # Don't fail the server startup
