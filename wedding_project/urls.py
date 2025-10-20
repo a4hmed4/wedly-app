@@ -19,19 +19,27 @@ from django.urls import path, include
 from django.conf import settings
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 from django.conf.urls.static import static
+from . import views
 
 urlpatterns = [
+    # Main pages
+    path("", views.index_view, name="index"),
+    path("admin-access/", views.admin_access_view, name="admin_access"),
+    path("api-info/", views.api_info_view, name="api_info"),
+    
+    # Admin panel
     path("admin/", admin.site.urls),
-    path('api/halls/', include('halls.urls')),
-    path('api/accounts/', include('accounts.urls')),
-    path('api/services/', include('services.urls')),
-    path('api/bookings/', include('bookings.urls')),
-    path('api/payments/', include('payments.urls')),
-    path('api/reviews/', include('reviews.urls')),
-    path('api/cloud/', include('cloud.urls')),
-    path('api/notifications/', include('notifications.urls')),
-    path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
-    path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
+    # API endpoints (without /api/ prefix)
+    path('halls/', include('halls.urls')),
+    path('accounts/', include('accounts.urls')),
+    path('services/', include('services.urls')),
+    path('bookings/', include('bookings.urls')),
+    path('payments/', include('payments.urls')),
+    path('reviews/', include('reviews.urls')),
+    path('cloud/', include('cloud.urls')),
+    path('notifications/', include('notifications.urls')),
+    path('token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
+    path('token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
 
     path('auth/', include('dj_rest_auth.urls')),
     path('auth/registration/', include('dj_rest_auth.registration.urls')),
