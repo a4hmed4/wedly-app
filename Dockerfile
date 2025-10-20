@@ -39,6 +39,9 @@ RUN python manage.py collectstatic --noinput --clear
 
 RUN python manage.py migrate --noinput
 
+# Make startup script executable
+RUN chmod +x start.sh
+
 # Create non-root user
 RUN adduser --disabled-password --gecos '' appuser && \
     chown -R appuser:appuser /app
@@ -52,8 +55,4 @@ HEALTHCHECK --interval=30s --timeout=30s --start-period=5s --retries=3 \
     CMD python -c "import requests; requests.get('http://localhost:8080/api/accounts/profile/', timeout=10)" || exit 1
 
 # Run the application
-#CMD ["python", "manage.py", "runserver", "0.0.0.0:8080"]
-
-
-
-CMD ["gunicorn", "wedding_project.wsgi:application", "--bind", "0.0.0.0:8080"]
+CMD ["./start.sh"]

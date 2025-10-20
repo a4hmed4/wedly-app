@@ -18,7 +18,7 @@ steps:
   - '--platform'
   - 'managed'
   - '--region'
-  - 'us-central1'
+  - 'me-central1'
   - '--allow-unauthenticated'
   - '--port'
   - '8080'
@@ -28,6 +28,12 @@ steps:
   - '1'
   - '--max-instances'
   - '10'
+  - '--timeout'
+  - '300'
+  - '--concurrency'
+  - '80'
+  - '--set-env-vars'
+  - 'DEBUG=False,SECRET_KEY=your-secret-key-here,ALLOWED_HOSTS=wedly-app-258355634687.me-central1.run.app'
 
 images:
 - 'gcr.io/$PROJECT_ID/wedlyapp'
