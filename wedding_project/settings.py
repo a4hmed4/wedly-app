@@ -42,6 +42,12 @@ ALLOWED_HOSTS = os.getenv(
 ).split(",")
 
 
+# Allow Cloud Run and frontend domain for CSRF
+CSRF_TRUSTED_ORIGINS = [
+    "https://wedly-app-258355634687.me-central1.run.app",
+    "https://localhost",
+    "http://localhost",
+]
 
 
 # Application definition
