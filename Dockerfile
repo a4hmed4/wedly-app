@@ -36,4 +36,6 @@ RUN python manage.py migrate --noinput && \
 EXPOSE 8080
 
 # Start the application
-CMD ["gunicorn", "wedding_project.wsgi:application", "--bind", "0.0.0.0:8080", "--workers", "1", "--timeout", "120"]
+#CMD ["gunicorn", "wedding_project.wsgi:application", "--bind", "0.0.0.0:8080", "--workers", "1", "--timeout", "120"]
+
+CMD exec gunicorn wedding_project.wsgi:application --bind 0.0.0.0:$PORT
