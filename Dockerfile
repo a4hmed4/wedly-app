@@ -74,4 +74,4 @@ HEALTHCHECK --interval=30s --timeout=30s --start-period=10s --retries=3 \
     CMD curl -f http://localhost:$PORT/api/accounts/profile/ || exit 1
 
 # Start the application
-CMD ["./start.sh"]
+CMD exec gunicorn wedding_project.wsgi:application --bind 0.0.0.0:$PORT
