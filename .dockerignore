@@ -50,7 +50,7 @@ media/
 staticfiles/
 
 # Environment files
-.env
+#.env
 .env.local
 .env.production
 

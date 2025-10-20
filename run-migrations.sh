@@ -25,7 +25,7 @@ echo -e "${YELLOW}📋 Running migrations on: $SERVICE_NAME${NC}"
 gcloud run jobs create migrate-job \
     --image $IMAGE_NAME \
     --region $REGION \
-    --set-env-vars "DEBUG=False,SECRET_KEY=your-secret-key-here,ALLOWED_HOSTS=wedly-app-258355634687.me-central1.run.app,localhost,127.0.0.1,PORT=8080,DJANGO_SETTINGS_MODULE=wedding_project.settings,DATABASE_URL=postgresql://postgres:Wedly%40%402025@db.kbdloigsvdrxqngrflvb.supabase.co:5432/postgres" \
+    --set-env-vars "DEBUG=False,SECRET_KEY=django-insecure-=om$f*08=)8i=gmqzud!ql@k=)bsknx-bct32^v^(=qn0vad@l,ALLOWED_HOSTS=wedly-app-258355634687.me-central1.run.app,localhost,127.0.0.1,PORT=8080,DJANGO_SETTINGS_MODULE=wedding_project.settings,DATABASE_URL=postgresql://postgres:Wedly%40%402025@db.kbdloigsvdrxqngrflvb.supabase.co:5432/postgres" \
     --command "python" \
     --args "manage.py,migrate,--noinput" \
     --memory 1Gi \
