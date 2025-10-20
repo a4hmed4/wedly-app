@@ -20,7 +20,7 @@ RUN pip install --no-cache-dir --upgrade pip && pip install --no-cache-dir -r re
 
 COPY . .
 
-RUN python manage.py collectstatic --noinput && python manage.py migrate --noinput
+#RUN python manage.py collectstatic --noinput && python manage.py migrate --noinput
 
 EXPOSE 8080
 
