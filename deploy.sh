@@ -61,7 +61,7 @@ gcloud run deploy $SERVICE_NAME \
     --max-instances 10 \
     --timeout 300 \
     --concurrency 100 \
-    --set-env-vars "DEBUG=False,SECRET_KEY=your-secret-key-here,ALLOWED_HOSTS=wedly-app-258355634687.me-central1.run.app,localhost,127.0.0.1,PORT=8080,DJANGO_SETTINGS_MODULE=wedding_project.settings,DATABASE_URL=postgresql://postgres:[YOUR_PASSWORD]@db.kbdloigsvdrxqngrflvb.supabase.co:5432/postgres"
+    --set-env-vars "DEBUG=False,SECRET_KEY=django-insecure-=om$f*08=)8i=gmqzud!ql@k=)bsknx-bct32^v^(=qn0vad@l,ALLOWED_HOSTS=wedly-app-258355634687.me-central1.run.app,localhost,127.0.0.1,PORT=8080,DJANGO_SETTINGS_MODULE=wedding_project.settings,DATABASE_URL=postgresql://postgres:Wedly%40%402025@db.kbdloigsvdrxqngrflvb.supabase.co:5432/postgres"
 
 if [ $? -eq 0 ]; then
     echo -e "${GREEN}✅ Deployment successful!${NC}"
