@@ -1,8 +1,8 @@
 # Gunicorn configuration for Google Cloud Run
 import os
 
-# Server socket
-bind = "0.0.0.0:8080"
+# Server socket - use PORT environment variable for Cloud Run
+bind = f"0.0.0.0:{os.environ.get('PORT', '8080')}"
 backlog = 2048
 
 # Worker processes

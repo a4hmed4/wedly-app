@@ -50,9 +50,9 @@ USER appuser
 # Expose port
 EXPOSE 8080
 
-# Health check
+# Health check - use PORT environment variable
 HEALTHCHECK --interval=30s --timeout=30s --start-period=5s --retries=3 \
-    CMD python -c "import requests; requests.get('http://localhost:8080/api/accounts/profile/', timeout=10)" || exit 1
+    CMD python -c "import os, requests; port=os.environ.get('PORT', '8080'); requests.get(f'http://localhost:{port}/api/accounts/profile/', timeout=10)" || exit 1
 
 # Run the application
 CMD ["./start.sh"]

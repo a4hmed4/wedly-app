@@ -5,6 +5,10 @@ set -e
 
 echo "🚀 Starting WedlyApp on Google Cloud Run..."
 
+# Get port from environment variable (Cloud Run requirement)
+PORT=${PORT:-8080}
+echo "🌐 Using port: $PORT"
+
 # Wait for database to be ready (if using Cloud SQL)
 if [ ! -z "$CLOUD_SQL_CONNECTION_NAME" ]; then
     echo "⏳ Waiting for Cloud SQL connection..."
@@ -33,6 +37,6 @@ else:
 EOF
 fi
 
-# Start the application
-echo "🌐 Starting Gunicorn server..."
-exec gunicorn wedding_project.wsgi:application -c gunicorn.conf.py
+# Start the application with dynamic port
+echo "🌐 Starting Gunicorn server on port $PORT..."
+exec gunicorn wedding_project.wsgi:application --bind 0.0.0.0:$PORT --workers 1 --timeout 120 --keep-alive 2 --max-requests 1000 --max-requests-jitter 100

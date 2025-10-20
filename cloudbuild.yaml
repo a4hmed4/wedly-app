@@ -22,6 +22,8 @@ steps:
   - '--allow-unauthenticated'
   - '--port'
   - '8080'
+  - '--set-env-vars'
+  - 'PORT=8080'
   - '--memory'
   - '1Gi'
   - '--cpu'
@@ -33,7 +35,7 @@ steps:
   - '--concurrency'
   - '80'
   - '--set-env-vars'
-  - 'DEBUG=False,SECRET_KEY=your-secret-key-here,ALLOWED_HOSTS=wedly-app-258355634687.me-central1.run.app'
+  - 'DEBUG=False,SECRET_KEY=your-secret-key-here,ALLOWED_HOSTS=wedly-app-258355634687.me-central1.run.app,PORT=8080'
 
 images:
 - 'gcr.io/$PROJECT_ID/wedlyapp'
