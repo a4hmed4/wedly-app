@@ -38,6 +38,9 @@ RUN python -m compileall . && \
 ENV DJANGO_SETTINGS_MODULE=wedding_project.settings
 ENV PYTHONPATH=/app
 
+# Make entrypoint script executable
+RUN chmod +x entrypoint.sh
+
 # Create non-root user
 RUN adduser --disabled-password --gecos '' appuser && \
     chown -R appuser:appuser /app
@@ -50,5 +53,5 @@ EXPOSE 8080
 HEALTHCHECK --interval=30s --timeout=30s --start-period=10s --retries=3 \
     CMD python -c "import os, requests; port=os.environ.get('PORT', '8080'); requests.get(f'http://localhost:{port}/api/accounts/profile/', timeout=10)" || exit 1
 
-# Run the application directly with Gunicorn
-CMD ["gunicorn", "wedding_project.wsgi:application", "-c", "gunicorn.conf.py"]
+# Run the application with entrypoint script
+CMD ["./entrypoint.sh"]
