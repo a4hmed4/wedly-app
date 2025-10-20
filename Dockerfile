@@ -30,6 +30,9 @@ COPY . .
 # Create directories
 RUN mkdir -p /app/media /app/static
 
+# Set default DATABASE_URL for build time (Supabase)
+ENV DATABASE_URL=postgresql://postgres:Wedly%40%402025@db.kbdloigsvdrxqngrflvb.supabase.co:5432/postgres
+
 # Run Django setup
 RUN python manage.py migrate --noinput && \
     python manage.py collectstatic --noinput --clear

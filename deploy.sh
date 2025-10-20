@@ -61,13 +61,14 @@ gcloud run deploy $SERVICE_NAME \
     --max-instances 10 \
     --timeout 300 \
     --concurrency 100 \
-    --set-env-vars "DEBUG=False,SECRET_KEY=your-secret-key-here,ALLOWED_HOSTS=wedly-app-258355634687.me-central1.run.app,localhost,127.0.0.1,PORT=8080,DJANGO_SETTINGS_MODULE=wedding_project.settings"
+    --set-env-vars "DEBUG=False,SECRET_KEY=your-secret-key-here,ALLOWED_HOSTS=wedly-app-258355634687.me-central1.run.app,localhost,127.0.0.1,PORT=8080,DJANGO_SETTINGS_MODULE=wedding_project.settings,DATABASE_URL=postgresql://postgres:[YOUR_PASSWORD]@db.kbdloigsvdrxqngrflvb.supabase.co:5432/postgres"
 
 if [ $? -eq 0 ]; then
     echo -e "${GREEN}✅ Deployment successful!${NC}"
     echo ""
     echo -e "${GREEN}🎉 WedlyApp is now running on Google Cloud Run!${NC}"
     echo -e "${YELLOW}📝 URL: https://wedly-app-258355634687.me-central1.run.app${NC}"
+    echo -e "${YELLOW}📝 Don't forget to update [YOUR_PASSWORD] with your actual Supabase password!${NC}"
 else
     echo -e "${RED}❌ Deployment failed!${NC}"
     exit 1
