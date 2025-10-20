@@ -4,21 +4,25 @@ FROM python:3.11-slim as base
 ENV PYTHONDONTWRITEBYTECODE=1 \
     PYTHONUNBUFFERED=1 \
     PIP_NO_CACHE_DIR=1 \
-    PIP_DISABLE_PIP_VERSION_CHECK=1
+    PIP_DISABLE_PIP_VERSION_CHECK=1 \
+    PYTHONHASHSEED=random \
+    DJANGO_SETTINGS_MODULE=wedding_project.settings
 
-# Install system dependencies
-RUN apt-get update && apt-get install -y \
+# Install system dependencies (minimal)
+RUN apt-get update && apt-get install -y --no-install-recommends \
     build-essential \
     libpq-dev \
     gettext \
-    && rm -rf /var/lib/apt/lists/*
+    && rm -rf /var/lib/apt/lists/* \
+    && apt-get clean
 
 # Create and set work directory
 WORKDIR /app
 
-# Install Python dependencies
+# Install Python dependencies (optimized)
 COPY requirements.txt .
-RUN pip install --no-cache-dir -r requirements.txt
+RUN pip install --no-cache-dir --upgrade pip && \
+    pip install --no-cache-dir -r requirements.txt
 
 # Copy project
 COPY . .
@@ -26,8 +30,12 @@ COPY . .
 # Create media and static directories
 RUN mkdir -p /app/media /app/static
 
-# Collect static files
-RUN python manage.py collectstatic --noinput --settings=wedding_project.settings
+# Optimize Python bytecode
+RUN python -m compileall . && \
+    find . -name "*.py" -exec python -m py_compile {} \;
+
+# Collect static files (optimized)
+RUN python manage.py collectstatic --noinput --clear
 
 # Create non-root user
 RUN adduser --disabled-password --gecos '' appuser && \
