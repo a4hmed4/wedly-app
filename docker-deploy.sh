@@ -61,13 +61,13 @@ gcloud run deploy $SERVICE_NAME \
     --max-instances 10 \
     --timeout 300 \
     --concurrency 100 \
-    --set-env-vars "DEBUG=False,SECRET_KEY=your-secret-key-here,ALLOWED_HOSTS=wedly-app-258355634687.me-central1.run.app,PORT=8080,DJANGO_SETTINGS_MODULE=wedding_project.settings,DATABASE_URL=postgresql://postgres:[YOUR_PASSWORD]@db.kbdloigsvdrxqngrflvb.supabase.co:5432/postgres"
+    --set-env-vars "DEBUG=False,SECRET_KEY=your-secret-key-here,ALLOWED_HOSTS=wedly-app-258355634687.me-central1.run.app,PORT=8080,DJANGO_SETTINGS_MODULE=wedding_project.settings"
 
 if [ $? -eq 0 ]; then
     echo -e "${GREEN}✅ Deployment successful!${NC}"
     echo ""
     echo -e "${GREEN}🎉 WedlyApp is now running on Google Cloud Run!${NC}"
-    echo -e "${YELLOW}📝 Don't forget to update the DATABASE_URL with your actual Supabase password!${NC}"
+    echo -e "${YELLOW}📝 The app is using SQLite database by default. To use Supabase, set DATABASE_URL environment variable.${NC}"
 else
     echo -e "${RED}❌ Deployment failed!${NC}"
     exit 1
